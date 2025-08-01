@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+ @font-face {
+   font-family: 'openSauceSans' ;
+   src: url('./fonts/open-sauce.one-regular.ttf') format('truetype');
+}
+
+body{
+  font-family: 'openSauceSans', 'times-new-roman';
+  font-weight: 600;
+}
