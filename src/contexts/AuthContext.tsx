@@ -15,7 +15,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const fetchMe = async (): Promise<void> => {
       try {
         const res = await api.get('/auth/me');
-        console.log(res.data);
         setUser(res.data);
       } catch {
         setUser(null);

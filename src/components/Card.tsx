@@ -2,7 +2,7 @@ interface CardProps {
   title: string;
   count: number;
   trend: 'Up' | 'Down';
-  percent: string;
+  percent?: string;
   note: string;
 }
 
@@ -15,7 +15,7 @@ export const Card: React.FC<CardProps> = ({ title, count, trend, percent, note }
         className={`flex items-center text-sm ${trend === 'Up' ? 'text-green-600' : 'text-red-600'
           }`}
       >
-        {trend === 'Up' ? '▲' : '▼'} {percent} {note}
+        {trend === 'Up' ? '' : ''} {percent} {note}
       </div>
     </div>
   );

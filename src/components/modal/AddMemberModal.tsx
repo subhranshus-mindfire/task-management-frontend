@@ -1,5 +1,3 @@
-// src/components/project/AddMemberModal.tsx
-
 import { useState, useEffect, type JSX, type ChangeEvent } from 'react';
 import api from '../../utils/api';
 
@@ -11,7 +9,7 @@ interface User {
 
 interface AddMemberModalProps {
   onClose: () => void;
-  projectId: string; // You’ll pass this in!
+  projectId: string;
 }
 
 export default function AddMemberModal({
@@ -40,17 +38,17 @@ export default function AddMemberModal({
       }
     }, 500);
 
-    return () => clearTimeout(delayDebounce);
+    return (): void => clearTimeout(delayDebounce);
   }, [search]);
 
-  const handleAddMember = async (userId: string) => {
+  const handleAddMember = async (userId: string): Promise<void> => {
     try {
       await api.post('/projects/add-member', {
         projectId,
         userId,
       });
       onClose();
-    } catch (err) {
+    } catch(err) {
       console.error(err);
     }
   };

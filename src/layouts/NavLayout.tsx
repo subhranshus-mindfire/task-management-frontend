@@ -89,7 +89,7 @@ export default function Layout(): JSX.Element {
               <div className="flex flex-col gap-2">
                 <button
                   onClick={logout}
-                  className="text-red-600 border border-red-600 rounded px-4 py-2 hover:bg-red-50 w-full"
+                  className="text-blue-600 border border-blue-600 rounded px-4 py-2 hover:bg-blue-50 w-full"
                 >
                   Logout
                 </button>
@@ -102,18 +102,21 @@ export default function Layout(): JSX.Element {
         )}
 
         <div className="flex flex-col flex-1 overflow-hidden">
-          <header className={`flex items-center ${!user ? 'justify-between' : 'justify-end'} bg-white px-4 py-3 shadow-md md:shadow-none`}>
-            <button
-              className="text-gray-700 md:hidden"
-              onClick={toggleSidebar}
-            >
-              ☰
-            </button>
+          <header className={'flex items-center justify-between bg-white px-4 py-3 shadow-md md:shadow-none'}>
+
             {user ? (
-              <div className='flex items-center gap-3'>
-                <div className="h-8 w-8 rounded-full bg-gray-400"></div>
-                <span className="text-gray-700">{user.name ?? 'Profile'}</span>
-              </div>
+              <>
+                <button
+                  className="text-gray-700 md:invisible"
+                  onClick={toggleSidebar}
+                >
+                  ☰
+                </button>
+                <div className='flex items-center gap-3'>
+                  <img src={'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png'} className="h-8 w-8 rounded-full bg-gray-400"/>
+                  <span className="text-gray-700">{user.name ?? 'Profile'}</span>
+                </div>
+              </>
             ) : (
               <>
                 <div className="text-blue-600 text-2xl ps-4 cursor-pointer">

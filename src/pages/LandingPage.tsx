@@ -7,8 +7,8 @@ export default function LandingPage(): JSX.Element {
 
   return (
     <main className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
-      <section className="flex flex-col md:flex-row items-center justify-between px-8 py-20 max-w-8xl mx-auto">
-        <div className="">
+      <section className="flex flex-col md:flex-row items-center justify-between px-8 lg:py-20 py-5 max-w-8xl mx-auto">
+        <div className="order-2 lg:order-1">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Manage your tasks like a pro with <span className="text-blue-600">Taskify</span>
           </h1>
@@ -31,7 +31,7 @@ export default function LandingPage(): JSX.Element {
           </div>
         </div>
 
-        <div className="md:w-1/2 mt-10 md:mt-0 flex justify-center">
+        <div className="md:w-1/2 mt-10 mb-8 md:mt-0 md:mb-0 flex justify-center order-1 lg:order-2">
           <img
             src="https://projectsly.com/images/task-management-system-screenshot-1.png?v=1691124479409199525"
             alt="Task Management Illustration"
