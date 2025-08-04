@@ -28,7 +28,7 @@ export default function Dashboard(): JSX.Element {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTasks = async () => {
+    const fetchTasks = async (): Promise<void> => {
       if (!user) {return;}
 
       try {
@@ -58,7 +58,7 @@ export default function Dashboard(): JSX.Element {
   const overduePercent = ((overdue / totalTasks) * 100).toFixed(1);
 
   return user ? (
-    <div className="p-1 lg:p-8 min-h-screen bg-white dark:bg-gray-900 transition-colors">
+    <div className="p-1 lg:p-8 min-h-screen bg-white dark:bg-gray-800 transition-colors">
       <header className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
           Welcome Back {user?.name || ''}
@@ -112,21 +112,21 @@ export default function Dashboard(): JSX.Element {
       ) : tasks.length > 0 ? (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-gray-100 dark:bg-gray-700 text-xs md:text-sm text-gray-700 dark:text-gray-200">
+            <thead className="bg-gray-100 dark:bg-gray-600 text-xs md:text-sm text-gray-700 dark:text-gray-200">
               <tr>
-                <th className="py-2 px-1 md:px-6 md:py-4">Title</th>
-                <th className="py-2 px-1 md:px-6 md:py-4 hidden sm:table-cell">Description</th>
-                <th className="py-2 px-1 md:px-6 md:py-4">Project</th>
-                <th className="py-2 px-1 md:px-6 md:py-4 hidden sm:table-cell">Created By</th>
-                <th className="py-2 px-1 md:px-6 md:py-4">Status</th>
-                <th className="py-2 px-1 md:px-6 md:py-4">Due Date</th>
+                <th className="py-2 px-1 md:px-6 md:py-4 ">Title</th>
+                <th className="py-2 px-1 md:px-6 md:py-4  hidden sm:table-cell">Description</th>
+                <th className="py-2 px-1 md:px-6 md:py-4 ">Project</th>
+                <th className="py-2 px-1 md:px-6 md:py-4  hidden sm:table-cell">Created By</th>
+                <th className="py-2 px-1 md:px-6 md:py-4 ">Status</th>
+                <th className="py-2 px-1 md:px-6 md:py-4 ">Due Date</th>
               </tr>
             </thead>
             <tbody>
               {tasks.map((task) => (
                 <tr
                   key={task._id}
-                  className="shadow text-xs md:text-sm text-gray-800 dark:text-gray-100"
+                  className="shadow text-xs md:text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700"
                 >
                   <td className="py-2 px-1 md:px-6 md:py-4">{task.title}</td>
                   <td className="py-2 px-1 md:px-6 md:py-4 hidden sm:table-cell">

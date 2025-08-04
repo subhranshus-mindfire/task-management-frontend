@@ -14,7 +14,7 @@ export default function Notifications(): JSX.Element {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [fetching, setFetching] = useState(true);
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = async (): Promise<void> => {
     try {
       const res = await api.get<Notification[]>('/notifications');
       setNotifications(res.data);
@@ -25,7 +25,7 @@ export default function Notifications(): JSX.Element {
     }
   };
 
-  const markAsRead = async (id: string) => {
+  const markAsRead = async (id: string): Promise<void> => {
     try {
       await api.patch(`/notifications/${id}/read`);
       fetchNotifications();
@@ -77,7 +77,7 @@ export default function Notifications(): JSX.Element {
         {notifications.map((n) => (
           <li
             key={n._id}
-            className="flex flex-col shadow rounded-lg p-4 transition bg-white dark:bg-gray-800 border border-b border-gray-700"
+            className="flex flex-col shadow rounded-lg p-4 transition bg-white dark:bg-gray-700 border border-b border-gray-700"
           >
             <div className="flex justify-between items-start gap-4">
               <div className="flex items-start gap-3">

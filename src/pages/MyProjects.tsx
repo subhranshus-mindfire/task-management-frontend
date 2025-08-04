@@ -22,7 +22,7 @@ export default function MyProjects(): JSX.Element {
 
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const fetchProjects = async () => {
+  const fetchProjects = async (): Promise<void> => {
     if (!user) { return; }
 
     try {
@@ -40,15 +40,15 @@ export default function MyProjects(): JSX.Element {
     fetchProjects();
   }, [user]);
 
-  const handleAddProject = () => {
+  const handleAddProject = (): void => {
     openModal('createProject');
   };
 
-  const handleAddMember = (projectId: string) => {
+  const handleAddMember = (projectId: string): void => {
     openModal('addMember', { projectId });
   };
 
-  const handleDeleteClick = (project: Project) => {
+  const handleDeleteClick = (project: Project): void => {
     setProjectToDelete(project);
     setShowDeleteModal(true);
   };
@@ -68,7 +68,7 @@ export default function MyProjects(): JSX.Element {
   };
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent): void => {
       if (
         showDeleteModal &&
         modalRef.current &&
@@ -80,7 +80,7 @@ export default function MyProjects(): JSX.Element {
     };
 
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
+    return (): void => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [showDeleteModal]);

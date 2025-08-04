@@ -18,7 +18,7 @@ export const DashboardCard: React.FC<CardProps> = ({
   iconColor,
 }) => {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6 flex justify-between">
+    <div className="bg-white dark:bg-gray-700 rounded-xl shadow p-6 flex justify-between">
       <div>
         <h3 className="text-gray-500 dark:text-gray-400 mb-2">{title}</h3>
         <p className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">{count}</p>

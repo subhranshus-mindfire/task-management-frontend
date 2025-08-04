@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { useAuth } from '../../hooks/Auth'; 
 interface ProjectCardProps {
   name: string;
   description: string;
@@ -17,16 +17,19 @@ export default function ProjectCard({
   _id,
 }: ProjectCardProps): JSX.Element {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const isManager = user?.role === 'manager';
 
   return (
     <div
-      className="relative rounded-lg p-5 shadow bg-white dark:bg-gray-800 hover:shadow-md transition-shadow cursor-pointer border border-gray-700"
+      className="relative rounded-lg p-5 shadow bg-white dark:bg-gray-700 hover:shadow-md transition-shadow cursor-pointer border border-gray-200 dark:border-gray-600"
       onClick={() => navigate(`/projects/${_id}`)}
     >
       <h3 className="text-xl font-bold mb-2 text-gray-800 dark:text-gray-100">{name}</h3>
       <p className="text-gray-600 dark:text-gray-300 mb-16">{description}</p>
 
-      {onAddMember && (
+      {isManager && onAddMember && (
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -39,7 +42,7 @@ export default function ProjectCard({
         </button>
       )}
 
-      {onDelete && (
+      {isManager && onDelete && (
         <button
           onClick={(e) => {
             e.stopPropagation();

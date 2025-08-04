@@ -14,18 +14,18 @@ export default function Layout(): JSX.Element {
   const { openModal } = useModal();
   const navigate = useNavigate();
 
-  const logout = () => {
+  const logout = (): void => {
     api.post('/auth/logout', {});
     setUser(null);
     setShowProfileMenu(false);
     navigate('/');
   };
 
-  const toggleSidebar = () => {
+  const toggleSidebar = (): void => {
     setIsSidebarOpen((prev) => !prev);
   };
 
-  const closeSidebar = () => {
+  const closeSidebar = (): void => {
     setIsSidebarOpen(false);
   };
 
@@ -45,7 +45,7 @@ export default function Layout(): JSX.Element {
     }
   }, []);
 
-  const toggleTheme = () => {
+  const toggleTheme = (): void => {
     if (theme === 'light') {
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
@@ -58,7 +58,7 @@ export default function Layout(): JSX.Element {
   };
 
   useEffect(() => {
-    const fetchUnreadCount = async () => {
+    const fetchUnreadCount = async (): Promise<void> => {
       if (!user) { return; }
 
       try {
@@ -198,6 +198,13 @@ export default function Layout(): JSX.Element {
 
                 <div className="hidden md:flex gap-2">
                   <button
+                    onClick={toggleTheme}
+                    className="ml-2 text-xl me-6"
+                    title="Toggle Theme"
+                  >
+                    {theme === 'light' ? '🌙' : '☀️'}
+                  </button>
+                  <button
                     className="text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 rounded px-4 py-2 hover:bg-blue-50 dark:hover:bg-gray-700"
                     onClick={() => openModal('login')}
                   >
@@ -209,19 +216,13 @@ export default function Layout(): JSX.Element {
                   >
                     Get Started
                   </button>
-                  <button
-                    onClick={toggleTheme}
-                    className="ml-2 text-xl"
-                    title="Toggle Theme"
-                  >
-                    {theme === 'light' ? '🌙' : '☀️'}
-                  </button>
+
                 </div>
               </>
             )}
           </header>
 
-          <main className="flex-1 overflow-y-auto p-4">
+          <main className="flex-1 overflow-y-auto p-4 dark:bg-gray-800">
             <Outlet />
           </main>
         </div>
