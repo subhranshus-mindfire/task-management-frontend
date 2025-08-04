@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+
  @font-face {
    font-family: 'openSauceSans' ;
    src: url('./fonts/open-sauce.one-regular.ttf') format('truetype');

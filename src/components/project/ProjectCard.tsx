@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { useAuth } from '../../hooks/Auth'; 
 interface ProjectCardProps {
   name: string;
   description: string;
@@ -17,36 +17,39 @@ export default function ProjectCard({
   _id,
 }: ProjectCardProps): JSX.Element {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const isManager = user?.role === 'manager';
 
   return (
     <div
-      className="relative rounded-lg p-5 shadow bg-white hover:shadow-md transition-shadow cursor-pointer"
+      className="relative rounded-lg p-5 shadow bg-white dark:bg-gray-700 hover:shadow-md transition-shadow cursor-pointer border border-gray-200 dark:border-gray-600"
       onClick={() => navigate(`/projects/${_id}`)}
     >
-      <h3 className="text-xl font-bold mb-2 text-gray-800">{name}</h3>
-      <p className="text-gray-600 mb-16">{description}</p>
+      <h3 className="text-xl font-bold mb-2 text-gray-800 dark:text-gray-100">{name}</h3>
+      <p className="text-gray-600 dark:text-gray-300 mb-16">{description}</p>
 
-      {onAddMember && (
+      {isManager && onAddMember && (
         <button
           onClick={(e) => {
             e.stopPropagation();
             onAddMember();
           }}
           title="Add Member"
-          className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-100 text-green-600 text-xs shadow-sm hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-blue-300 transition cursor-pointer hover:scale-105 font-semibold"
+          className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 text-xs shadow-sm hover:bg-green-200 dark:hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-blue-300 transition cursor-pointer hover:scale-105 font-semibold"
         >
           <i className="fas fa-user-plus"></i> Add Member
         </button>
       )}
 
-      {onDelete && (
+      {isManager && onDelete && (
         <button
           onClick={(e) => {
             e.stopPropagation();
             onDelete();
           }}
           title="Delete Project"
-          className="absolute top-4 right-4 flex items-center gap-1 px-3 py-1.5 rounded-full bg-red-100 text-red-700 text-xs font-semibold hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-300 transition  cursor-pointer hover:scale-105"
+          className="absolute top-4 right-4 flex items-center gap-1 px-3 py-1.5 rounded-full bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 text-xs font-semibold hover:bg-red-200 dark:hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-300 transition cursor-pointer hover:scale-105"
         >
           <i className="fas fa-trash"></i> Delete
         </button>

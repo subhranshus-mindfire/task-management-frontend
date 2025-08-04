@@ -1,4 +1,3 @@
-
 import { type JSX } from 'react';
 import { useModal } from '../hooks/Modal';
 
@@ -6,13 +5,14 @@ export default function LandingPage(): JSX.Element {
   const { openModal } = useModal();
 
   return (
-    <main className="min-h-screen flex flex-col bg-gray-50 text-gray-800">
+    <main className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors">
       <section className="flex flex-col md:flex-row items-center justify-between px-8 lg:py-20 py-5 max-w-8xl mx-auto">
         <div className="order-2 lg:order-1">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Manage your tasks like a pro with <span className="text-blue-600">Taskify</span>
+            Manage your tasks like a pro with{' '}
+            <span className="text-blue-600 dark:text-blue-400">Taskify</span>
           </h1>
-          <p className="mb-8 text-lg text-gray-600">
+          <p className="mb-8 text-lg text-gray-600 dark:text-gray-300">
             Organize your projects, track deadlines, collaborate with your team, and never miss a task again.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
@@ -24,7 +24,7 @@ export default function LandingPage(): JSX.Element {
             </button>
             <button
               onClick={() => openModal('login')}
-              className="border border-blue-600 text-blue-600 px-6 py-3 rounded-md text-lg hover:bg-blue-50 transition"
+              className="border border-blue-600 text-blue-600 px-6 py-3 rounded-md text-lg hover:bg-blue-50 dark:hover:bg-blue-900 transition"
             >
               Login
             </button>
@@ -40,28 +40,30 @@ export default function LandingPage(): JSX.Element {
         </div>
       </section>
 
-      <section className="bg-white py-20 px-8">
+      <section className="bg-white dark:bg-gray-800 py-20 px-8 transition-colors">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Why choose Taskify?</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Why choose <span className="text-blue-600 dark:text-blue-400">Taskify</span>?
+          </h2>
           <div className="grid gap-10 md:grid-cols-3">
             <div className="text-center">
-              <i className="fas fa-check-circle text-blue-600 text-4xl mb-4"></i>
+              <i className="fas fa-check-circle text-blue-600 dark:text-blue-400 text-4xl mb-4"></i>
               <h3 className="text-xl font-semibold mb-2">Stay Organized</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-300">
                 Easily create projects, assign tasks, and monitor progress from a single dashboard.
               </p>
             </div>
             <div className="text-center">
-              <i className="fas fa-users text-blue-600 text-4xl mb-4"></i>
+              <i className="fas fa-users text-blue-600 dark:text-blue-400 text-4xl mb-4"></i>
               <h3 className="text-xl font-semibold mb-2">Collaborate</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-300">
                 Work seamlessly with your team, assign members, and communicate effectively.
               </p>
             </div>
             <div className="text-center">
-              <i className="fas fa-bell text-blue-600 text-4xl mb-4"></i>
+              <i className="fas fa-bell text-blue-600 dark:text-blue-400 text-4xl mb-4"></i>
               <h3 className="text-xl font-semibold mb-2">Get Notified</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-300">
                 Receive timely reminders so you never miss a deadline or important update.
               </p>
             </div>
@@ -70,8 +72,10 @@ export default function LandingPage(): JSX.Element {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-100 py-8 px-8 text-center">
-        <p className="text-gray-500">© {new Date().getFullYear()} Taskify. All rights reserved.</p>
+      <footer className="bg-gray-100 dark:bg-gray-800 py-8 px-8 text-center transition-colors">
+        <p className="text-gray-500 dark:text-gray-400">
+          © {new Date().getFullYear()} Taskify. All rights reserved.
+        </p>
       </footer>
     </main>
   );

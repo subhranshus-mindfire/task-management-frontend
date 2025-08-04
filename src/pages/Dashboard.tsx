@@ -2,7 +2,7 @@ import { useEffect, useState, type JSX } from 'react';
 import { useAuth } from '../hooks/Auth';
 import api from '../utils/api';
 import LandingPage from './LandingPage';
-import { Card } from '../components/Card';
+import { DashboardCard } from '../components/DashboardCard';
 
 interface Task {
   _id: string;
@@ -28,8 +28,8 @@ export default function Dashboard(): JSX.Element {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTasks = async () => {
-      if (!user) { return; }
+    const fetchTasks = async (): Promise<void> => {
+      if (!user) {return;}
 
       try {
         const res = await api.get(`/tasks/by-member/${user.userId}`);
@@ -46,7 +46,7 @@ export default function Dashboard(): JSX.Element {
 
   const now = new Date();
 
-  const totalTasks = tasks.length || 1; // Avoid divide by zero
+  const totalTasks = tasks.length || 1;
   const done = tasks.filter((t) => t.status === 'complete').length;
   const incomplete = tasks.filter((t) => t.status === 'incomplete').length;
   const overdue = tasks.filter(
@@ -58,77 +58,93 @@ export default function Dashboard(): JSX.Element {
   const overduePercent = ((overdue / totalTasks) * 100).toFixed(1);
 
   return user ? (
-    <div className="p-1 lg:p-8 lg:bg-gray-50 min-h-screen">
+    <div className="p-1 lg:p-8 min-h-screen bg-white dark:bg-gray-800 transition-colors">
       <header className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-semibold">
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
           Welcome Back {user?.name || ''}
         </h1>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-        <Card
+        <DashboardCard
+          icon="fas fa-tasks"
           title="Total Tasks"
           count={totalTasks}
           trend="Up"
           note="All assigned tasks"
+          iconColor="text-blue-700"
         />
-        <Card
+        <DashboardCard
+          icon="fas fa-hourglass-half"
           title="Incomplete"
           count={incomplete}
           trend="Up"
           percent={`${incompletePercent}%`}
           note="Pending tasks"
+          iconColor="text-yellow-500"
         />
-        <Card
+        <DashboardCard
+          icon="fas fa-check-circle"
           title="Done"
           count={done}
           trend="Up"
           percent={`${donePercent}%`}
           note="Marked complete"
+          iconColor="text-green-600"
         />
-        <Card
+        <DashboardCard
+          icon="fas fa-exclamation-triangle"
           title="Overdue"
           count={overdue}
           trend="Down"
           percent={`${overduePercent}%`}
           note="Past due date"
+          iconColor="text-red-600"
         />
       </div>
 
-      <h2 className="text-xl font-semibold mb-4">Your Project Tasks</h2>
+      <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+        Your Project Tasks
+      </h2>
 
       {loading ? (
-        <p>Loading tasks...</p>
+        <p className="text-gray-700 dark:text-gray-300">Loading tasks...</p>
       ) : tasks.length > 0 ? (
-        <div className="bg-white rounded-lg shadow overflow-x-auto">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-gray-100 text-xs md:text-sm">
+            <thead className="bg-gray-100 dark:bg-gray-600 text-xs md:text-sm text-gray-700 dark:text-gray-200">
               <tr>
-                <th className="py-2 px-1 md:px-6 md:py-4">Title</th>
-                <th className="py-2 px-1 md:px-6 md:py-4 hidden sm:table-cell">Description</th>
-                <th className="py-2 px-1 md:px-6 md:py-4">Project</th>
-                <th className="py-2 px-1 md:px-6 md:py-4 hidden sm:table-cell">Created By</th>
-                <th className="py-2 px-1 md:px-6 md:py-4">Status</th>
-                <th className="py-2 px-1 md:px-6 md:py-4">Due Date</th>
+                <th className="py-2 px-1 md:px-6 md:py-4 ">Title</th>
+                <th className="py-2 px-1 md:px-6 md:py-4  hidden sm:table-cell">Description</th>
+                <th className="py-2 px-1 md:px-6 md:py-4 ">Project</th>
+                <th className="py-2 px-1 md:px-6 md:py-4  hidden sm:table-cell">Created By</th>
+                <th className="py-2 px-1 md:px-6 md:py-4 ">Status</th>
+                <th className="py-2 px-1 md:px-6 md:py-4 ">Due Date</th>
               </tr>
             </thead>
             <tbody>
               {tasks.map((task) => (
-                <tr key={task._id} className="shadow text-xs md:text-sm">
+                <tr
+                  key={task._id}
+                  className="shadow text-xs md:text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700"
+                >
                   <td className="py-2 px-1 md:px-6 md:py-4">{task.title}</td>
                   <td className="py-2 px-1 md:px-6 md:py-4 hidden sm:table-cell">
                     {task.description || 'N/A'}
                   </td>
-                  <td className="py-2 px-1 md:px-6 md:py-4">{task.projectId?.name || '-'}</td>
+                  <td className="py-2 px-1 md:px-6 md:py-4">
+                    {task.projectId?.name || '-'}
+                  </td>
                   <td className="py-2 px-1 md:px-6 md:py-4 hidden sm:table-cell">
                     {task.createdBy?.name || '-'}
                   </td>
                   <td className="py-2 px-1 md:px-6 md:py-4">
                     <span
-                      className={`px-1 py-1 rounded-full text-xs font-semibold ${task.status === 'complete'
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-yellow-100 text-yellow-700'
-                        }`}
+                      className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                        task.status === 'complete'
+                          ? 'bg-green-100 text-green-700 dark:bg-green-200 dark:text-green-800'
+                          : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-200 dark:text-yellow-800'
+                      }`}
                     >
                       {task.status}
                     </span>
@@ -140,11 +156,9 @@ export default function Dashboard(): JSX.Element {
               ))}
             </tbody>
           </table>
-
-
         </div>
       ) : (
-        <p className="p-4 text-gray-500">No tasks found.</p>
+        <p className="p-4 text-gray-500 dark:text-gray-400">No tasks found.</p>
       )}
     </div>
   ) : (

@@ -27,21 +27,23 @@ export default function RegisterModal({ onClose }: RegisterModalProps): JSX.Elem
   };
 
   return (
-    <div className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md">
-      <h2 className="text-2xl font-bold mb-2 text-gray-800 text-center">Get Started </h2>
-      <p className="mb-6 text-gray-500 text-sm text-center">
+    <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl w-full max-w-md">
+      <h2 className="text-2xl font-bold mb-2 text-gray-800 dark:text-gray-100 text-center">
+        Get Started
+      </h2>
+      <p className="mb-6 text-gray-500 dark:text-gray-400 text-sm text-center">
         Fill in your details to create your account.
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <div>
-          <label className="block text-sm font-medium mb-1 text-gray-700">
+          <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
             Name
           </label>
           <input
             type="text"
             {...register('name', { required: 'Name is required' })}
-            className="w-full border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-100 rounded-md px-4 py-2 transition"
+            className="w-full border border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-100 dark:focus:ring-blue-800 rounded-md px-4 py-2 transition bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400"
             placeholder="Your name"
           />
           {errors.name && (
@@ -50,13 +52,13 @@ export default function RegisterModal({ onClose }: RegisterModalProps): JSX.Elem
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1 text-gray-700">
+          <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
             Email
           </label>
           <input
             type="email"
             {...register('email', { required: 'Email is required' })}
-            className="w-full border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-100 rounded-md px-4 py-2 transition"
+            className="w-full border border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-100 dark:focus:ring-blue-800 rounded-md px-4 py-2 transition bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400"
             placeholder="you@example.com"
           />
           {errors.email && (
@@ -65,13 +67,13 @@ export default function RegisterModal({ onClose }: RegisterModalProps): JSX.Elem
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1 text-gray-700">
+          <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
             Password
           </label>
           <input
             type="password"
             {...register('password', { required: 'Password is required' })}
-            className="w-full border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-100 rounded-md px-4 py-2 transition"
+            className="w-full border border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-100 dark:focus:ring-blue-800 rounded-md px-4 py-2 transition bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400"
             placeholder="••••••••"
           />
           {errors.password && (
@@ -80,14 +82,14 @@ export default function RegisterModal({ onClose }: RegisterModalProps): JSX.Elem
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1 text-gray-700">
+          <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
             Role
           </label>
           <select
             {...register('role', { required: 'Role is required' })}
-            className="w-full border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-100 rounded-md px-4 py-2 transition text-gray-500"
+            className="w-full border border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring focus:ring-blue-100 dark:focus:ring-blue-800 rounded-md px-4 py-2 transition bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
           >
-            <option value="" >Select a role</option>
+            <option value="">Select a role</option>
             <option value="manager">Manager</option>
             <option value="employee">Employee</option>
           </select>
@@ -100,7 +102,7 @@ export default function RegisterModal({ onClose }: RegisterModalProps): JSX.Elem
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-500 hover:underline"
+            className="text-gray-500 dark:text-gray-300 hover:underline"
           >
             Cancel
           </button>
