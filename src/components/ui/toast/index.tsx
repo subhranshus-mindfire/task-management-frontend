@@ -114,7 +114,7 @@ export const ToastProvider = ({ children, maxToasts = 100 }: { children: React.R
       return (
         <ToastContext.Provider value={{addToast}}>
             {children}
-            <div className="fixed top-5 right-5 mt-4 mr-4 w-sm space-y-8">
+            <div className="fixed top-5 right-5 mt-4 mr-4 w-sm space-y-8 z-50">
                 <AnimatePresence>
                 {toasts.map((toast) => (
                 <Toast

@@ -1,13 +1,15 @@
 import type { JSX } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/Auth'; 
+import { useAuth } from '../../hooks/Auth';
 interface ProjectCardProps {
   name: string;
   description: string;
   onAddMember?: () => void;
+  onSeeMembers?: () => void;
   onDelete?: () => void;
   _id: string;
 }
+
 
 export default function ProjectCard({
   name,
@@ -15,6 +17,7 @@ export default function ProjectCard({
   onAddMember,
   onDelete,
   _id,
+  onSeeMembers,
 }: ProjectCardProps): JSX.Element {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -54,6 +57,20 @@ export default function ProjectCard({
           <i className="fas fa-trash"></i> Delete
         </button>
       )}
+
+      {onSeeMembers && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onSeeMembers();
+          }}
+          title="See All Members"
+          className="absolute bottom-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs shadow-sm hover:bg-purple-200 dark:hover:bg-purple-800 transition cursor-pointer hover:scale-105 font-semibold"
+        >
+          <i className="fas fa-users"></i> See All Members
+        </button>
+      )}
+
     </div>
   );
 }

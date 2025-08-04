@@ -30,7 +30,7 @@ export default function Layout(): JSX.Element {
   };
 
   const navLinkClasses =
-    'block py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-blue-900 text-center';
+    'block py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-blue-900 ';
 
   const activeClasses = 'text-blue-600 font-semibold bg-blue-100 dark:hover:text-white';
 
@@ -118,20 +118,7 @@ export default function Layout(): JSX.Element {
                 >
                   My Projects
                 </NavLink>
-                <NavLink
-                  to="/notifications"
-                  className={({ isActive }) =>
-                    `${navLinkClasses} ${isActive ? activeClasses : ''} relative`
-                  }
-                  onClick={closeSidebar}
-                >
-                  <div>
-                    My Notifications
-                    <span className="absolute -top-1 right-8 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
-                      {unreadCount}
-                    </span>
-                  </div>
-                </NavLink>
+
               </div>
               <div className="flex flex-col gap-2">
                 <button
@@ -156,13 +143,27 @@ export default function Layout(): JSX.Element {
                   ☰
                 </button>
 
-                <div className="flex items-center gap-3 relative">
+                <div className="flex items-center gap-5 relative">
+
                   <button
                     onClick={toggleTheme}
-                    className="ml-2 text-xl"
+                    className="ml-2 text-xl cursor-pointer"
                     title="Toggle Theme"
                   >
                     {theme === 'light' ? '🌙' : '☀️'}
+                  </button>
+
+                  <button
+                    onClick={() => navigate('/notifications')}
+                    className="relative text-xl text-gray-700 dark:text-gray-200 cursor-pointer"
+                    title="Notifications"
+                  >
+                    <i className="fas fa-bell"></i>
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-1 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                        {unreadCount}
+                      </span>
+                    )}
                   </button>
 
                   <button
@@ -174,7 +175,9 @@ export default function Layout(): JSX.Element {
                       alt="Profile"
                       className="h-8 w-8 rounded-full bg-gray-400"
                     />
-                    <span className="text-gray-700 dark:text-gray-200">{user.name ?? 'Profile'}</span>
+                    <span className="text-gray-700 dark:text-gray-200">
+                      {user.name ?? 'Profile'}
+                    </span>
                   </button>
 
                   {showProfileMenu && (
@@ -184,13 +187,14 @@ export default function Layout(): JSX.Element {
                         className="w-full text-left px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-200 text-sm cursor-pointer"
                       >
                         <i className="fa fa-sign-out" aria-hidden="true"></i>
-                        <span className='ps-2'>Logout</span>
+                        <span className="ps-2">Logout</span>
                       </button>
                     </div>
                   )}
                 </div>
               </>
             ) : (
+
               <>
                 <div className="text-blue-600 text-2xl ps-4 cursor-pointer">
                   <Link to="/">Taskify</Link>
@@ -216,11 +220,11 @@ export default function Layout(): JSX.Element {
                   >
                     Get Started
                   </button>
-
                 </div>
               </>
             )}
           </header>
+
 
           <main className="flex-1 overflow-y-auto p-4 dark:bg-gray-800">
             <Outlet />

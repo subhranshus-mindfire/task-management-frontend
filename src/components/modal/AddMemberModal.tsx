@@ -1,5 +1,9 @@
 import { useState, useEffect, type JSX, type ChangeEvent } from 'react';
 import api from '../../utils/api';
+import { useToast } from '../ui/toast/use-toast';
+import { CheckCircledIcon } from '@radix-ui/react-icons';
+import type { ToastVariantTypes } from '../ui/toast/types';
+import type { AxiosError } from 'axios';
 
 interface User {
   _id: string;
@@ -19,6 +23,17 @@ export default function AddMemberModal({
   const [search, setSearch] = useState('');
   const [results, setResults] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
+
+  const showNotification = (msg: string, type: ToastVariantTypes) => {
+    toast.addToast({
+      message: msg,
+      variant: type,
+      animation: 'slide',
+      mode: 'light',
+      icon: <CheckCircledIcon />,
+    });
+  };
 
   useEffect(() => {
     if (!search) {
@@ -43,13 +58,18 @@ export default function AddMemberModal({
 
   const handleAddMember = async (userId: string): Promise<void> => {
     try {
-      await api.post('/projects/add-member', {
+      const res = await api.post('/projects/add-member', {
         projectId,
         userId,
       });
       onClose();
+      showNotification(res.data.message, 'success');
     } catch (err) {
-      console.error(err);
+      const error = err as AxiosError<{ message: string }>;
+      const errorMsg = error.response?.data?.message || 'Failed to add member.';
+      console.error(error);
+      onClose();
+      showNotification(errorMsg, 'error');
     }
   };
 
