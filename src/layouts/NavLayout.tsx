@@ -8,6 +8,7 @@ import api from '../utils/api';
 export default function Layout(): JSX.Element {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [unreadCount, setUnreadCount] = useState(0);
   const { user, setUser } = useAuth();
   const { openModal } = useModal();
@@ -29,9 +30,32 @@ export default function Layout(): JSX.Element {
   };
 
   const navLinkClasses =
-    'block py-2 px-3 rounded hover:bg-blue-100 text-center';
+    'block py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-blue-900 text-center';
 
-  const activeClasses = 'text-blue-600 font-semibold bg-blue-100';
+  const activeClasses = 'text-blue-600 font-semibold bg-blue-100 dark:hover:text-white';
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    if (storedTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      setTheme('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      setTheme('light');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    if (theme === 'light') {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+      setTheme('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+      setTheme('light');
+    }
+  };
 
   useEffect(() => {
     const fetchUnreadCount = async () => {
@@ -39,7 +63,6 @@ export default function Layout(): JSX.Element {
 
       try {
         const res = await api.get('notifications/getNotifications');
-        console.log(res.data);
         setUnreadCount(res.data || 0);
       } catch (err) {
         console.error('Error fetching notifications count:', err);
@@ -51,7 +74,7 @@ export default function Layout(): JSX.Element {
 
   return (
     <>
-      <div className="flex h-screen bg-gray-100 relative">
+      <div className="flex h-screen bg-gray-100 dark:bg-gray-950 relative">
         {isSidebarOpen && (
           <div
             className="fixed inset-0 bg-[rgb(0,0,0,0.4)] z-20 md:hidden"
@@ -61,13 +84,13 @@ export default function Layout(): JSX.Element {
 
         {user && (
           <aside
-            className={`fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-lg transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            className={`fixed inset-y-0 left-0 z-30 w-64 bg-white dark:bg-gray-900 dark:text-gray-100 shadow-lg transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
               } transition-transform duration-300 ease-in-out md:relative md:translate-x-0`}
           >
-            <div className="flex items-center justify-between p-4 font-bold text-2xl text-blue-700 cursor-pointer">
+            <div className="flex items-center justify-between p-4 font-bold text-2xl text-blue-700 dark:text-blue-400 cursor-pointer">
               <Link to="/">Taskify</Link>
               <button
-                className="md:hidden text-gray-600"
+                className="md:hidden text-gray-600 dark:text-gray-300"
                 onClick={closeSidebar}
               >
                 ✕
@@ -104,20 +127,16 @@ export default function Layout(): JSX.Element {
                 >
                   <div>
                     My Notifications
-                    {(
-                      <span className=" absolute -top-1 right-8 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
-                        {unreadCount}
-                      </span>
-                    )}
+                    <span className="absolute -top-1 right-8 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                      {unreadCount}
+                    </span>
                   </div>
-
                 </NavLink>
-
               </div>
               <div className="flex flex-col gap-2">
                 <button
                   onClick={logout}
-                  className="text-blue-600 border border-blue-600 rounded px-4 py-2 hover:bg-blue-50 w-full cursor-pointer"
+                  className="text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 rounded px-4 py-2 hover:bg-blue-50 dark:hover:bg-gray-700 w-full cursor-pointer"
                 >
                   Logout
                 </button>
@@ -127,17 +146,25 @@ export default function Layout(): JSX.Element {
         )}
 
         <div className="flex flex-col flex-1 overflow-hidden">
-          <header className="flex items-center justify-between bg-white px-4 py-3 shadow-md md:shadow-none relative">
+          <header className="flex items-center justify-between bg-white dark:bg-gray-900 px-4 py-3 shadow-md md:shadow-none relative">
             {user ? (
               <>
                 <button
-                  className="text-gray-700 md:invisible"
+                  className="text-gray-700 dark:text-gray-200 md:invisible"
                   onClick={toggleSidebar}
                 >
                   ☰
                 </button>
 
                 <div className="flex items-center gap-3 relative">
+                  <button
+                    onClick={toggleTheme}
+                    className="ml-2 text-xl"
+                    title="Toggle Theme"
+                  >
+                    {theme === 'light' ? '🌙' : '☀️'}
+                  </button>
+
                   <button
                     onClick={() => setShowProfileMenu((prev) => !prev)}
                     className="flex items-center gap-2 focus:outline-none cursor-pointer"
@@ -147,17 +174,16 @@ export default function Layout(): JSX.Element {
                       alt="Profile"
                       className="h-8 w-8 rounded-full bg-gray-400"
                     />
-                    <span className="text-gray-700">{user.name ?? 'Profile'}</span>
+                    <span className="text-gray-700 dark:text-gray-200">{user.name ?? 'Profile'}</span>
                   </button>
 
                   {showProfileMenu && (
-                    <div className="absolute top-12 right-0 bg-white border shadow rounded w-40 z-50">
+                    <div className="absolute top-12 right-0 bg-white dark:bg-gray-800 border dark:border-gray-700 shadow rounded w-40 z-50">
                       <button
                         onClick={logout}
-                        className="w-full text-left px-4 py-3 hover:bg-gray-100 text-sm cursor-pointer"
+                        className="w-full text-left px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-200 text-sm cursor-pointer"
                       >
                         <i className="fa fa-sign-out" aria-hidden="true"></i>
-
                         <span className='ps-2'>Logout</span>
                       </button>
                     </div>
@@ -172,7 +198,7 @@ export default function Layout(): JSX.Element {
 
                 <div className="hidden md:flex gap-2">
                   <button
-                    className="text-blue-600 border border-blue-600 rounded px-4 py-2 hover:bg-blue-50"
+                    className="text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 rounded px-4 py-2 hover:bg-blue-50 dark:hover:bg-gray-700"
                     onClick={() => openModal('login')}
                   >
                     Login
@@ -182,6 +208,13 @@ export default function Layout(): JSX.Element {
                     onClick={() => openModal('register')}
                   >
                     Get Started
+                  </button>
+                  <button
+                    onClick={toggleTheme}
+                    className="ml-2 text-xl"
+                    title="Toggle Theme"
+                  >
+                    {theme === 'light' ? '🌙' : '☀️'}
                   </button>
                 </div>
               </>
@@ -197,4 +230,5 @@ export default function Layout(): JSX.Element {
       <ModalContainer />
     </>
   );
+
 }

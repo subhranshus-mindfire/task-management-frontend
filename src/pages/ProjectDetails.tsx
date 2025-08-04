@@ -41,9 +41,9 @@ const DraggableTask = ({ task, onRequestDelete }: DraggableTaskProps) => {
 
   const status = getTaskStatus();
   const statusColors: Record<string, string> = {
-    green: 'bg-green-100 text-green-700',
-    red: 'bg-red-100 text-red-700',
-    yellow: 'bg-yellow-100 text-yellow-700',
+    green: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
+    red: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
+    yellow: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300',
   };
 
   return (
@@ -51,21 +51,26 @@ const DraggableTask = ({ task, onRequestDelete }: DraggableTaskProps) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-expect-error
       ref={drag}
-      className={`relative border border-gray-300 shadow-lg rounded-xl p-5 bg-white hover:shadow-2xl transition cursor-grab ${isDragging ? 'opacity-50' : ''}`}
+      className={`relative border border-gray-300 dark:border-gray-600 shadow-lg rounded-xl p-5 bg-white dark:bg-gray-800 hover:shadow-2xl transition cursor-grab ${isDragging ? 'opacity-50' : ''
+        }`}
     >
       <div
         className={`absolute top-4 right-4 inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ${statusColors[status.color]}`}
       >
         <i className={`${status.icon} text-sm`} /> {status.label}
       </div>
-      <h2 className="text-lg font-semibold mb-1 text-gray-800">{task.title}</h2>
-      <p className="text-gray-600 mb-2">{task.description || 'No description'}</p>
-      <p className="text-xs text-gray-500 mb-1">
+      <h2 className="text-lg font-semibold mb-1 text-gray-800 dark:text-gray-100">
+        {task.title}
+      </h2>
+      <p className="text-gray-600 dark:text-gray-300 mb-2">
+        {task.description || 'No description'}
+      </p>
+      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
         Due: {new Date(task.dueDate).toLocaleDateString()}
       </p>
       <button
         onClick={() => onRequestDelete(task)}
-        className="inline-flex items-center gap-1 mt-3 text-xs px-3 py-1.5 rounded-full bg-red-100 text-red-700 hover:bg-red-200 transition"
+        className="inline-flex items-center gap-1 mt-3 text-xs px-3 py-1.5 rounded-full bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900 dark:text-red-300 dark:hover:bg-red-800 transition"
       >
         <i className="fas fa-trash" /> Delete
       </button>
@@ -168,11 +173,11 @@ export default function ProjectDetails(): JSX.Element {
         //@ts-expect-error
         ref={drop}
         className={`w-full min-h-[200px] p-6 rounded-lg border transition ${isOver && canDrop
-            ? 'bg-blue-50 border-blue-400'
-            : 'bg-white border-gray-200'
+            ? 'bg-blue-50 border-blue-400 dark:bg-blue-950 dark:border-blue-500'
+            : 'bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700'
           }`}
       >
-        <h2 className="flex items-center gap-2 text-xl font-bold mb-4 text-gray-800">
+        <h2 className="flex items-center gap-2 text-xl font-bold mb-4 text-gray-800 dark:text-gray-100">
           {status === 'incomplete' ? (
             <>
               <i className="fas fa-tasks" /> Incomplete Tasks
@@ -184,7 +189,7 @@ export default function ProjectDetails(): JSX.Element {
           )}
         </h2>
         {React.Children.count(children) === 0 ? (
-          <p className="text-sm text-gray-400">No tasks here yet.</p>
+          <p className="text-sm text-gray-400 dark:text-gray-500">No tasks here yet.</p>
         ) : (
           <div className="space-y-4">{children}</div>
         )}
@@ -196,7 +201,7 @@ export default function ProjectDetails(): JSX.Element {
     <DndProvider backend={HTML5Backend}>
       <div className="p-4 sm:p-6 lg:p-10 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
-          <h1 className="text-3xl font-bold text-gray-800">Tasks</h1>
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Tasks</h1>
           <button
             onClick={handleAddTask}
             className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 transition"
@@ -206,7 +211,7 @@ export default function ProjectDetails(): JSX.Element {
         </div>
 
         {loading ? (
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading...</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             <DropZone status="incomplete">
@@ -234,17 +239,19 @@ export default function ProjectDetails(): JSX.Element {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgb(0,0,0,0.4)] bg-opacity-40">
             <div
               ref={modalRef}
-              className="bg-white rounded-lg p-6 max-w-sm w-full shadow"
+              className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-sm w-full shadow"
             >
-              <h2 className="text-lg font-bold mb-4">Delete Task</h2>
-              <p className="mb-6">
+              <h2 className="text-lg font-bold mb-4 text-gray-800 dark:text-gray-100">
+                Delete Task
+              </h2>
+              <p className="mb-6 text-gray-700 dark:text-gray-300">
                 Are you sure you want to delete{' '}
                 <span className="font-semibold">{taskToDelete.title}</span>?
               </p>
               <div className="flex justify-end gap-3">
                 <button
                   onClick={() => setShowDeleteModal(false)}
-                  className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300"
+                  className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200"
                 >
                   Cancel
                 </button>

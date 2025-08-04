@@ -19,8 +19,10 @@ export default function CreateProjectModal(): JSX.Element {
   };
 
   return (
-    <div className="bg-white p-6 rounded shadow-lg w-full max-w-md">
-      <h2 className="text-xl font-bold mb-4">Create Project</h2>
+    <div className="bg-white dark:bg-gray-800 p-6 rounded shadow-lg w-full max-w-md">
+      <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+        Create Project
+      </h2>
       <form onSubmit={handleCreate} className="flex flex-col gap-4">
         <input
           type="text"
@@ -28,24 +30,28 @@ export default function CreateProjectModal(): JSX.Element {
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          className="border border-gray-200 px-3 py-2 rounded"
+          className="border border-gray-200 dark:border-gray-600 px-3 py-2 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400"
         />
         <textarea
           placeholder="Project Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
-          className="border border-gray-200 px-3 py-2 rounded"
+          className="border border-gray-200 dark:border-gray-600 px-3 py-2 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-400"
           cols={20}
           rows={7}
         />
         <div className="flex justify-end gap-2">
-          <button type="button" onClick={closeModal} className="text-gray-600">
+          <button
+            type="button"
+            onClick={closeModal}
+            className="text-gray-600 dark:text-gray-300 hover:underline"
+          >
             Cancel
           </button>
           <button
             type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             Create
           </button>

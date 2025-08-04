@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, type JSX } from 'react'; // ✅ add useRef
+import { useEffect, useState, useRef, type JSX } from 'react';
 import api from '../utils/api';
 import ProjectCard from '../components/project/ProjectCard';
 import { useAuth } from '../hooks/Auth';
@@ -20,10 +20,10 @@ export default function MyProjects(): JSX.Element {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
 
-  const modalRef = useRef<HTMLDivElement>(null); // ✅ modal content ref
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const fetchProjects = async () => {
-    if (!user) {return;}
+    if (!user) { return; }
 
     try {
       setFetching(true);
@@ -54,7 +54,7 @@ export default function MyProjects(): JSX.Element {
   };
 
   const confirmDelete = async (): Promise<void> => {
-    if (!projectToDelete) {return;}
+    if (!projectToDelete) { return; }
 
     try {
       await api.delete(`/projects/${projectToDelete._id}`);
@@ -85,12 +85,12 @@ export default function MyProjects(): JSX.Element {
     };
   }, [showDeleteModal]);
 
-  if (loading) {return <p>Loading user...</p>;}
-  if (!user) {return <p>You must be logged in to view your projects.</p>;}
+  if (loading) { return <p className="dark:text-gray-200">Loading user...</p>; }
+  if (!user) { return <p className="dark:text-gray-200">You must be logged in to view your projects.</p>; }
 
   return (
-    <div className="p-1 md:px-40">
-      <div className="flex items-center justify-between mb-4 text-xl lg:text-2xl">
+    <div className="p-1 md:px-40 text-gray-900 dark:text-gray-100 dark:bg-gray-800 min-h-screen">
+      <div className="flex items-center justify-between mb-4 text-xl lg:text-2xl pt-4">
         <h1 className="font-bold">My Projects</h1>
         {user.role === 'manager' && (
           <button
@@ -102,10 +102,10 @@ export default function MyProjects(): JSX.Element {
         )}
       </div>
 
-      {fetching && <p>Loading projects...</p>}
+      {fetching && <p className="dark:text-gray-300">Loading projects...</p>}
 
       {projects.length === 0 && !fetching && (
-        <p className="text-gray-600">No projects assigned yet.</p>
+        <p className="text-gray-600 dark:text-gray-400">No projects assigned yet.</p>
       )}
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -125,7 +125,7 @@ export default function MyProjects(): JSX.Element {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgb(0,0,0,0.3)] bg-opacity-40">
           <div
             ref={modalRef}
-            className="bg-white rounded-lg p-6 max-w-sm w-full shadow"
+            className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-sm w-full shadow transition-colors"
           >
             <h2 className="text-lg font-bold mb-4">Delete Project</h2>
             <p className="mb-6">
@@ -135,7 +135,7 @@ export default function MyProjects(): JSX.Element {
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300"
+                className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
               >
                 Cancel
               </button>

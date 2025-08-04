@@ -12,20 +12,16 @@ export default function ModalContainer(): JSX.Element | null {
   if (!modal) {return null;}
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-[rgb(0,0,0,0.4)] bg-opacity-40 z-50 p-4">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50 p-4">
       {modal === 'login' && <LoginModal onClose={closeModal} />}
-
       {modal === 'register' && <RegisterModal onClose={closeModal} />}
-
       {modal === 'createProject' && <CreateProjectModal />}
-
       {modal === 'addMember' && (
         <AddMemberModal
           onClose={closeModal}
           projectId={modalProps?.projectId as string}
         />
       )}
-
       {modal === 'addTask' && (
         <AddTaskModal
           onClose={closeModal}
