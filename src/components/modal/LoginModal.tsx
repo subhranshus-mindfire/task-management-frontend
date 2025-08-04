@@ -6,6 +6,7 @@ import { useAuth } from '../../hooks/Auth';
 import { useToast } from '../ui/toast/use-toast';
 import { CheckCircledIcon } from '@radix-ui/react-icons';
 import type { ToastVariantTypes } from '../ui/toast/types';
+import type { AxiosError } from 'axios';
 
 interface LoginFormInputs {
   email: string;
@@ -41,13 +42,17 @@ export default function LoginModal({
     try {
       await api.post('/auth/login', data);
       const newRes = await api.get('/auth/me');
-      console.log(newRes.data);
       setUser(newRes.data);
       onClose();
       navigate('/');
-      showNotification('Login Success', 'success');
-    } catch (error) {
-      console.error(error);
+      showNotification('Logged In Successfully', 'success');
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      if (error?.response?.data?.message) {
+        showNotification(error.response.data.message, 'error');
+      } else {
+        showNotification('Something went wrong. Please try again.', 'error');
+      }
     }
   };
 
