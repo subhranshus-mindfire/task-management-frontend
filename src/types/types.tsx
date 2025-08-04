@@ -11,15 +11,17 @@ export interface AuthContextType {
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
-export type ModalType = 
+export type ModalType =
   | 'login'
   | 'register'
   | 'createProject'
   | 'addMember'
+  | 'addTask'
   | null;
 
 export interface ModalContextProps {
   modal: ModalType;
-  openModal: (type: ModalType) => void;
+  modalProps?: Record<string, unknown>;
+  openModal: (type: ModalType, props?: Record<string, unknown>) => void;
   closeModal: () => void;
 }

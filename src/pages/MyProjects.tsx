@@ -1,8 +1,8 @@
-// src/pages/MyProjects.tsx
 import { useEffect, useState, type JSX } from 'react';
 import api from '../utils/api';
 import ProjectCard from '../components/project/ProjectCard';
 import { useAuth } from '../hooks/Auth';
+import { useModal } from '../hooks/Modal';
 
 interface Project {
   _id: string;
@@ -12,38 +12,60 @@ interface Project {
 
 export default function MyProjects(): JSX.Element {
   const { user, loading } = useAuth();
+  const { openModal } = useModal();
+
   const [projects, setProjects] = useState<Project[]>([]);
   const [fetching, setFetching] = useState(true);
 
-  useEffect(() => {
-    if (!user) {return;}
+  const fetchProjects = async () => {
+    if (!user) { return; }
 
-    api.get<Project[]>(`/projects/by-member/${user.userId}`)
-      .then((res) => setProjects(res.data))
-      .finally(() => setFetching(false));
+    try {
+      setFetching(true);
+      const res = await api.get<Project[]>(`/projects/by/${user.userId}`);
+      setProjects(res.data);
+    } catch (err) {
+      console.error('Error fetching projects:', err);
+    } finally {
+      setFetching(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects();
   }, [user]);
 
   const handleAddProject = () => {
-    // TODO: open Create Project modal
-    console.log('Open Create Project Modal');
+    openModal('createProject');
   };
 
   const handleAddMember = (projectId: string) => {
-    // TODO: open Add Employee modal
-    console.log(`Open Add Member Modal for project ${projectId}`);
+    openModal('addMember', { projectId });
   };
 
-  if (loading) {return <p>Loading user...</p>;}
-  if (!user) {return <p>You must be logged in to view your projects.</p>;}
+  const handleDeleteProject = async (projectId: string) => {
+    if (!confirm('Are you sure you want to delete this project?')) {return;}
+
+    try {
+      await api.delete(`/projects/${projectId}`);
+      fetchProjects();
+    } catch (err) {
+      console.error('Error deleting project:', err);
+    }
+  };
+
+
+  if (loading) { return <p>Loading user...</p>; }
+  if (!user) { return <p>You must be logged in to view your projects.</p>; }
 
   return (
-    <div className="p-4">
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold">My Projects</h1>
+    <div className="p-1 md:px-40">
+      <div className="flex items-center justify-between mb-4 text-xl lg:text-2xl">
+        <h1 className="font-bold">My Projects</h1>
         {user.role === 'manager' && (
           <button
             onClick={handleAddProject}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-blue-600 text-white p-2 text-base rounded hover:bg-blue-700"
           >
             + New Project
           </button>
@@ -62,11 +84,9 @@ export default function MyProjects(): JSX.Element {
             key={project._id}
             name={project.name}
             description={project.description}
-            onAddMember={
-              user.role === 'manager'
-                ? () => handleAddMember(project._id)
-                : undefined
-            }
+            onAddMember={() => handleAddMember(project._id)}
+            _id={project._id}
+            onDelete={() => handleDeleteProject(project._id)}
           />
         ))}
       </div>

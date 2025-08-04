@@ -1,9 +1,10 @@
 
 import type { ReactElement } from 'react';
+import Dashboard from './pages/Dashboard';
 
 const App = (): ReactElement => {
   return (
-    <div>App</div>
+    <Dashboard />
   );
 };
 
