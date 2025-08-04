@@ -96,7 +96,6 @@ export default function ProjectDetails(): JSX.Element {
                 key={task._id}
                 className="relative border border-gray-200 rounded-xl p-5 bg-white shadow-sm hover:shadow-md transition"
               >
-                {/* Status badge */}
                 <div
                   className={`absolute top-4 right-4 inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ${statusColors[status.color]}`}
                 >
