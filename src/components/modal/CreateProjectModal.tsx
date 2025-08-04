@@ -28,14 +28,14 @@ export default function CreateProjectModal(): JSX.Element {
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          className="border px-3 py-2 rounded"
+          className="border border-gray-200 px-3 py-2 rounded"
         />
         <textarea
           placeholder="Project Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
-          className="border px-3 py-2 rounded"
+          className="border border-gray-200 px-3 py-2 rounded"
           cols={20}
           rows={7}
         />

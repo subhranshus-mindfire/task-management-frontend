@@ -29,6 +29,7 @@ export default function Notifications(): JSX.Element {
     try {
       await api.patch(`/notifications/${id}/read`);
       fetchNotifications();
+      window.location.reload();
     } catch (err) {
       console.error('Failed to mark as read:', err);
     }
@@ -40,8 +41,8 @@ export default function Notifications(): JSX.Element {
     }
   }, [user]);
 
-  if (loading) {return <p className="p-4 text-center">Loading user...</p>;}
-  if (!user) {return <p className="p-4 text-center">Please log in to view notifications.</p>;}
+  if (loading) { return <p className="p-4 text-center">Loading user...</p>; }
+  if (!user) { return <p className="p-4 text-center">Please log in to view notifications.</p>; }
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
@@ -64,9 +65,8 @@ export default function Notifications(): JSX.Element {
             <div className="flex justify-between items-start gap-4">
               <div className="flex items-start gap-3">
                 <i
-                  className={`fas ${
-                    n.read ? 'fa-circle-check text-green-500' : 'fa-circle-exclamation text-yellow-500'
-                  } text-lg mt-1`}
+                  className={`fas ${n.read ? 'fa-circle-check text-green-500' : 'fa-circle-exclamation text-yellow-500'
+                    } text-lg mt-1`}
                 ></i>
                 <div>
                   <p className={`text-sm md:text-base ${n.read ? 'text-gray-600' : 'text-gray-800'}`}>

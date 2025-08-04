@@ -1,5 +1,5 @@
-import { useState, type JSX } from 'react';
-import { NavLink, Outlet, Link } from 'react-router-dom';
+import { useEffect, useState, type JSX } from 'react';
+import { NavLink, Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/Auth';
 import { useModal } from '../hooks/Modal';
 import ModalContainer from '../components/modal/ModalContainer';
@@ -8,13 +8,16 @@ import api from '../utils/api';
 export default function Layout(): JSX.Element {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const { user, setUser } = useAuth();
   const { openModal } = useModal();
+  const navigate = useNavigate();
 
   const logout = () => {
     api.post('/auth/logout', {});
     setUser(null);
     setShowProfileMenu(false);
+    navigate('/');
   };
 
   const toggleSidebar = () => {
@@ -26,9 +29,25 @@ export default function Layout(): JSX.Element {
   };
 
   const navLinkClasses =
-    'block py-2 px-3 rounded hover:bg-blue-100';
+    'block py-2 px-3 rounded hover:bg-blue-100 text-center';
 
   const activeClasses = 'text-blue-600 font-semibold bg-blue-100';
+
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      if (!user) { return; }
+
+      try {
+        const res = await api.get('notifications/getNotifications');
+        console.log(res.data);
+        setUnreadCount(res.data || 0);
+      } catch (err) {
+        console.error('Error fetching notifications count:', err);
+      }
+    };
+
+    fetchUnreadCount();
+  }, [user]);
 
   return (
     <>
@@ -46,7 +65,7 @@ export default function Layout(): JSX.Element {
               } transition-transform duration-300 ease-in-out md:relative md:translate-x-0`}
           >
             <div className="flex items-center justify-between p-4 font-bold text-2xl text-blue-700 cursor-pointer">
-              Taskify
+              <Link to="/">Taskify</Link>
               <button
                 className="md:hidden text-gray-600"
                 onClick={closeSidebar}
@@ -79,12 +98,29 @@ export default function Layout(): JSX.Element {
                 <NavLink
                   to="/notifications"
                   className={({ isActive }) =>
-                    `${navLinkClasses} ${isActive ? activeClasses : ''}`
+                    `${navLinkClasses} ${isActive ? activeClasses : ''} relative`
                   }
                   onClick={closeSidebar}
                 >
-                  My Notifications
+                  <div>
+                    My Notifications
+                    {(
+                      <span className=" absolute -top-1 right-8 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                        {unreadCount}
+                      </span>
+                    )}
+                  </div>
+
                 </NavLink>
+
+              </div>
+              <div className="flex flex-col gap-2">
+                <button
+                  onClick={logout}
+                  className="text-blue-600 border border-blue-600 rounded px-4 py-2 hover:bg-blue-50 w-full cursor-pointer"
+                >
+                  Logout
+                </button>
               </div>
             </nav>
           </aside>

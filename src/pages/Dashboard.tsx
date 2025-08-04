@@ -2,7 +2,7 @@ import { useEffect, useState, type JSX } from 'react';
 import { useAuth } from '../hooks/Auth';
 import api from '../utils/api';
 import LandingPage from './LandingPage';
-import { Card } from '../components/Card';
+import { DashboardCard } from '../components/DashboardCard';
 
 interface Task {
   _id: string;
@@ -29,7 +29,7 @@ export default function Dashboard(): JSX.Element {
 
   useEffect(() => {
     const fetchTasks = async () => {
-      if (!user) { return; }
+      if (!user) {return;}
 
       try {
         const res = await api.get(`/tasks/by-member/${user.userId}`);
@@ -46,7 +46,7 @@ export default function Dashboard(): JSX.Element {
 
   const now = new Date();
 
-  const totalTasks = tasks.length || 1; // Avoid divide by zero
+  const totalTasks = tasks.length || 1;
   const done = tasks.filter((t) => t.status === 'complete').length;
   const incomplete = tasks.filter((t) => t.status === 'incomplete').length;
   const overdue = tasks.filter(
@@ -66,32 +66,40 @@ export default function Dashboard(): JSX.Element {
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-        <Card
+        <DashboardCard
+          icon="fas fa-tasks"
           title="Total Tasks"
           count={totalTasks}
           trend="Up"
           note="All assigned tasks"
+          iconColor='text-blue-700'
         />
-        <Card
+        <DashboardCard
+          icon="fas fa-hourglass-half"
           title="Incomplete"
           count={incomplete}
           trend="Up"
           percent={`${incompletePercent}%`}
           note="Pending tasks"
+          iconColor='text-yellow-600'
         />
-        <Card
+        <DashboardCard
+          icon="fas fa-check-circle"
           title="Done"
           count={done}
           trend="Up"
           percent={`${donePercent}%`}
           note="Marked complete"
+          iconColor='text-green-600'
         />
-        <Card
+        <DashboardCard
+          icon="fas fa-exclamation-triangle"
           title="Overdue"
           count={overdue}
           trend="Down"
           percent={`${overduePercent}%`}
           note="Past due date"
+          iconColor='text-red-600'
         />
       </div>
 
@@ -105,9 +113,13 @@ export default function Dashboard(): JSX.Element {
             <thead className="bg-gray-100 text-xs md:text-sm">
               <tr>
                 <th className="py-2 px-1 md:px-6 md:py-4">Title</th>
-                <th className="py-2 px-1 md:px-6 md:py-4 hidden sm:table-cell">Description</th>
+                <th className="py-2 px-1 md:px-6 md:py-4 hidden sm:table-cell">
+                  Description
+                </th>
                 <th className="py-2 px-1 md:px-6 md:py-4">Project</th>
-                <th className="py-2 px-1 md:px-6 md:py-4 hidden sm:table-cell">Created By</th>
+                <th className="py-2 px-1 md:px-6 md:py-4 hidden sm:table-cell">
+                  Created By
+                </th>
                 <th className="py-2 px-1 md:px-6 md:py-4">Status</th>
                 <th className="py-2 px-1 md:px-6 md:py-4">Due Date</th>
               </tr>
@@ -119,16 +131,19 @@ export default function Dashboard(): JSX.Element {
                   <td className="py-2 px-1 md:px-6 md:py-4 hidden sm:table-cell">
                     {task.description || 'N/A'}
                   </td>
-                  <td className="py-2 px-1 md:px-6 md:py-4">{task.projectId?.name || '-'}</td>
+                  <td className="py-2 px-1 md:px-6 md:py-4">
+                    {task.projectId?.name || '-'}
+                  </td>
                   <td className="py-2 px-1 md:px-6 md:py-4 hidden sm:table-cell">
                     {task.createdBy?.name || '-'}
                   </td>
                   <td className="py-2 px-1 md:px-6 md:py-4">
                     <span
-                      className={`px-1 py-1 rounded-full text-xs font-semibold ${task.status === 'complete'
+                      className={`px-1 py-1 rounded-full text-xs font-semibold ${
+                        task.status === 'complete'
                           ? 'bg-green-100 text-green-700'
                           : 'bg-yellow-100 text-yellow-700'
-                        }`}
+                      }`}
                     >
                       {task.status}
                     </span>
@@ -140,8 +155,6 @@ export default function Dashboard(): JSX.Element {
               ))}
             </tbody>
           </table>
-
-
         </div>
       ) : (
         <p className="p-4 text-gray-500">No tasks found.</p>

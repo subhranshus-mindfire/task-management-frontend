@@ -3,6 +3,10 @@ import type { JSX } from 'react';
 import api from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/Auth';
+import { useToast } from '../ui/toast/use-toast';
+import { CheckCircledIcon } from '@radix-ui/react-icons';
+import type { ToastVariantTypes } from '../ui/toast/types';
+
 
 interface LoginFormInputs {
   email: string;
@@ -24,6 +28,18 @@ export default function LoginModal({
 
   const { setUser } = useAuth();
 
+  const toast = useToast();
+
+  const showNotification = (msg: string, type: ToastVariantTypes) => {
+    toast.addToast({
+      message: msg,
+      variant: type,
+      animation: 'slide',
+      mode: 'light',
+      icon: <CheckCircledIcon />,
+    });
+  };
+
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
@@ -33,6 +49,7 @@ export default function LoginModal({
       setUser(newRes.data);
       onClose();
       navigate('/');
+      showNotification('Login Success','success');
     } catch (error) {
       console.error(error);
     }
