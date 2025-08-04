@@ -36,6 +36,8 @@ export default function CreateProjectModal(): JSX.Element {
           onChange={(e) => setDescription(e.target.value)}
           required
           className="border px-3 py-2 rounded"
+          cols={20}
+          rows={7}
         />
         <div className="flex justify-end gap-2">
           <button type="button" onClick={closeModal} className="text-gray-600">

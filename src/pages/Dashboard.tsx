@@ -114,7 +114,7 @@ export default function Dashboard(): JSX.Element {
             </thead>
             <tbody>
               {tasks.map((task) => (
-                <tr key={task._id} className="border-t text-xs md:text-sm">
+                <tr key={task._id} className="shadow text-xs md:text-sm">
                   <td className="py-2 px-1 md:px-6 md:py-4">{task.title}</td>
                   <td className="py-2 px-1 md:px-6 md:py-4 hidden sm:table-cell">
                     {task.description || 'N/A'}

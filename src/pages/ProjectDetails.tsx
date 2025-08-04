@@ -39,11 +39,16 @@ export default function ProjectDetails(): JSX.Element {
     });
   };
 
-  const getTaskLabel = (task: Task) => {
-    if (task.status === 'complete') {return '✅ Complete';}
+  const getTaskStatus = (task: Task) => {
     const now = new Date();
     const due = new Date(task.dueDate);
-    return now > due ? '🚩 Backlog' : '⏳ On Time';
+    if (task.status === 'complete') {
+      return { label: 'Complete', icon: 'fas fa-check-circle', color: 'green' };
+    }
+    if (now > due) {
+      return { label: 'Backlog', icon: 'fas fa-flag', color: 'red' };
+    }
+    return { label: 'On Time', icon: 'fas fa-clock', color: 'yellow' };
   };
 
   const toggleTaskStatus = async (task: Task) => {
@@ -58,56 +63,77 @@ export default function ProjectDetails(): JSX.Element {
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
+    <div className="p-4 sm:p-6 lg:p-10 max-w-5xl mx-auto">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
         <h1 className="text-3xl font-bold text-gray-800">Project Tasks</h1>
         <button
           onClick={handleAddTask}
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 transition-colors"
+          className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 transition"
         >
-          <span className="text-lg">+</span> Add Task
+          <i className="fas fa-plus"></i> Add Task
         </button>
       </div>
 
       {loading ? (
         <p className="text-gray-600">Loading tasks...</p>
+      ) : tasks.length === 0 ? (
+        <div className="p-6 text-center text-gray-500 bg-white rounded-lg border border-gray-200 shadow-sm">
+          No tasks found for this project. Click{' '}
+          <span className="font-semibold text-gray-700">Add Task</span> to create one.
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {tasks.length === 0 ? (
-            <p className="text-gray-500 col-span-full">
-              No tasks found for this project.
-            </p>
-          ) : (
-            tasks.map((task) => (
+          {tasks.map((task) => {
+            const status = getTaskStatus(task);
+            const statusColors: Record<string, string> = {
+              green: 'bg-green-100 text-green-700',
+              red: 'bg-red-100 text-red-700',
+              yellow: 'bg-yellow-100 text-yellow-700',
+            };
+
+            return (
               <div
                 key={task._id}
-                className="border border-gray-200 rounded-lg p-5 shadow-sm bg-white hover:shadow-md transition-shadow"
+                className="relative border border-gray-200 rounded-xl p-5 bg-white shadow-sm hover:shadow-md transition"
               >
-                <h2 className="text-xl font-semibold mb-2 text-gray-800">{task.title}</h2>
-                <p className="text-gray-700 mb-3">{task.description}</p>
-                <p className="text-sm text-gray-500 mb-1">
-                  Due: {new Date(task.dueDate).toLocaleDateString()}
+                <div
+                  className={`absolute top-4 right-4 inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ${statusColors[status.color]}`}
+                >
+                  <i className={`${status.icon} text-sm`}></i> {status.label}
+                </div>
+
+                <h2 className="text-lg font-semibold text-gray-800 mb-1">{task.title}</h2>
+                <p className="text-gray-600 mb-3">
+                  {task.description || 'No description provided.'}
                 </p>
-                <p className="text-sm font-medium">
-                  {getTaskLabel(task)}
+
+                <p className="text-xs text-gray-500 mb-1">
+                  Due:{' '}
+                  <span className="font-medium text-gray-700">
+                    {new Date(task.dueDate).toLocaleDateString()}
+                  </span>
                 </p>
-                <div className="mt-4 flex flex-wrap gap-4">
+
+                <div className="mt-4 flex flex-wrap gap-3">
                   <button
                     onClick={() => toggleTaskStatus(task)}
-                    className="text-sm px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200 transition"
+                    className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full bg-green-100 text-green-700 hover:bg-green-200 transition"
                   >
-                    Mark as {task.status === 'complete' ? 'Incomplete' : 'Complete'}
+                    <i className="fas fa-sync"></i>
+                    Mark {task.status === 'complete' ? 'Incomplete' : 'Complete'}
                   </button>
+
                   <button
                     onClick={() => handleDeleteTask(task._id)}
-                    className="text-sm px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
+                    className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full bg-red-100 text-red-700 hover:bg-red-200 transition"
                   >
+                    <i className="fas fa-trash-alt"></i>
                     Delete
                   </button>
                 </div>
               </div>
-            ))
-          )}
+            );
+          })}
         </div>
       )}
     </div>
