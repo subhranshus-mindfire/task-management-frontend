@@ -25,7 +25,7 @@ export default function AddMemberModal({
   const [loading, setLoading] = useState(false);
   const toast = useToast();
 
-  const showNotification = (msg: string, type: ToastVariantTypes) => {
+  const showNotification = (msg: string, type: ToastVariantTypes): void => {
     toast.addToast({
       message: msg,
       variant: type,

@@ -21,7 +21,6 @@ export default function RegisterModal({ onClose }: RegisterModalProps): JSX.Elem
   } = useForm<RegisterFormValues>();
 
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
-    console.log('Register:', data);
     await api.post('/auth/register', data);
     onClose();
   };

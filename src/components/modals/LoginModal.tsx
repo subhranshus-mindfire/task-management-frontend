@@ -28,7 +28,7 @@ export default function LoginModal({
   const { setUser } = useAuth();
   const toast = useToast();
 
-  const showNotification = (msg: string, type: ToastVariantTypes) => {
+  const showNotification = (msg: string, type: ToastVariantTypes): void => {
     toast.addToast({
       message: msg,
       variant: type,
@@ -38,7 +38,7 @@ export default function LoginModal({
     });
   };
 
-  const onSubmit = async (data: LoginFormInputs) => {
+  const onSubmit = async (data: LoginFormInputs): Promise<void> => {
     try {
       await api.post('/auth/login', data);
       const newRes = await api.get('/auth/me');

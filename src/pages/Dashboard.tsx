@@ -2,7 +2,7 @@ import { useEffect, useState, type JSX } from 'react';
 import { useAuth } from '../hooks/Auth';
 import api from '../utils/api';
 import LandingPage from './LandingPage';
-import { DashboardCard } from '../components/DashboardCard';
+import { DashboardCard } from '../components/cards/DashboardCard';
 
 interface Task {
   _id: string;

@@ -3,7 +3,7 @@ import RegisterModal from './RegisterModal';
 import { useModal } from '../../hooks/Modal';
 import LoginModal from './LoginModal';
 import AddMemberModal from './AddMemberModal';
-import CreateProjectModal from './CreateProjectModal';
+import CreateProjectModal from './AddProjectModal';
 import AddTaskModal from './AddTaskModal';
 
 export default function ModalContainer(): JSX.Element | null {

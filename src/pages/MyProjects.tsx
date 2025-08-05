@@ -64,7 +64,7 @@ export default function MyProjects(): JSX.Element {
     }
   };
 
-  const showNotification = (msg: string, type: ToastVariantTypes) => {
+  const showNotification = (msg: string, type: ToastVariantTypes): void => {
     toast.addToast({
       message: msg,
       variant: type,
@@ -78,7 +78,6 @@ export default function MyProjects(): JSX.Element {
     try {
       const res = await api.delete(`/projects/${projectId}/members/${memberId}`);
       fetchMembers(projectId);
-      console.log(res);
       showNotification(res.data.message, 'success');
     } catch (err) {
       console.error('Error removing member:', err);
@@ -170,9 +169,9 @@ export default function MyProjects(): JSX.Element {
             key={project._id}
             name={project.name}
             description={project.description}
-            onAddMember={user.role === 'manager' ? () => handleAddMember(project._id) : undefined}
-            onSeeMembers={user.role === 'manager' ? () => handleSeeMembers(project._id) : undefined}
-            onDelete={user.role === 'manager' ? () => handleDeleteClick(project) : undefined}
+            onAddMember={user.role === 'manager' ? (): void => handleAddMember(project._id) : undefined}
+            onSeeMembers={user.role === 'manager' ? (): Promise<void> => handleSeeMembers(project._id) : undefined}
+            onDelete={user.role === 'manager' ? (): void => handleDeleteClick(project) : undefined}
             _id={project._id}
           />
         ))}

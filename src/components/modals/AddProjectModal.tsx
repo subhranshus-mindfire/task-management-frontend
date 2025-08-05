@@ -2,12 +2,12 @@ import { useState, type JSX } from 'react';
 import api from '../../utils/api';
 import { useModal } from '../../hooks/Modal';
 
-export default function CreateProjectModal(): JSX.Element {
+export default function AddProjectModal(): JSX.Element {
   const { closeModal } = useModal();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
-  const handleCreate = async (e: React.FormEvent) => {
+  const handleCreate = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     try {
       await api.post('/projects', { name, description });

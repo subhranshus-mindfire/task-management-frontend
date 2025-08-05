@@ -17,7 +17,7 @@ export default function AddTaskModal({
   const [dueDate, setDueDate] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleAddTask = async (e: FormEvent) => {
+  const handleAddTask = async (e: FormEvent):Promise<void> => {
     e.preventDefault();
     setLoading(true);
 
