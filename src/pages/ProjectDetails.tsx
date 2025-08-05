@@ -1,5 +1,5 @@
 // ProjectDetails.tsx
-import React, { useEffect, useState, useRef, type JSX } from 'react';
+import { useEffect, useState, useRef, type JSX } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../utils/api';
 import { useModal } from '../hooks/Modal';
@@ -26,7 +26,7 @@ export default function ProjectDetails(): JSX.Element {
   const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const fetchTasks = async () => {
+  const fetchTasks = async (): Promise<void> => {
     try {
       const res = await api.get(`/tasks/project/${projectId}`);
       setTasks(res.data);
@@ -41,25 +41,25 @@ export default function ProjectDetails(): JSX.Element {
     fetchTasks();
   }, [projectId]);
 
-  const handleAddTask = () => {
+  const handleAddTask = (): void => {
     openModal('addTask', {
       projectId: projectId!,
       onTaskCreated: fetchTasks,
     });
   };
 
-  const handleDrop = async (id: string, newStatus: 'complete' | 'incomplete') => {
+  const handleDrop = async (id: string, newStatus: 'complete' | 'incomplete'): Promise<void>  => {
     await api.patch(`/tasks/${id}/status`, { status: newStatus });
     fetchTasks();
   };
 
-  const requestDeleteTask = (task: Task) => {
+  const requestDeleteTask = (task: Task): void => {
     setTaskToDelete(task);
     setShowDeleteModal(true);
   };
 
-  const confirmDeleteTask = async () => {
-    if (!taskToDelete) {return;}
+  const confirmDeleteTask = async (): Promise<void> => {
+    if (!taskToDelete) { return; }
     try {
       await api.delete(`/tasks/${taskToDelete._id}`);
       fetchTasks();
@@ -72,7 +72,7 @@ export default function ProjectDetails(): JSX.Element {
   };
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent): void => {
       if (
         showDeleteModal &&
         modalRef.current &&
@@ -83,7 +83,7 @@ export default function ProjectDetails(): JSX.Element {
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return (): void  => document.removeEventListener('mousedown', handleClickOutside);
   }, [showDeleteModal]);
 
   const incompleteTasks = tasks.filter((t) => t.status === 'incomplete');

@@ -18,12 +18,13 @@ export default function DraggableTask({ task, onRequestDelete }: DraggableTaskPr
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'TASK',
     item: { id: task._id },
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
   }));
 
-  const getTaskStatus = () => {
+  const getTaskStatus = (): {label: string, icon: string, color: string} => {
     const now = new Date();
     const due = new Date(task.dueDate);
     if (task.status === 'complete') {
