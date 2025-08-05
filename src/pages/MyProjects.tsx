@@ -5,8 +5,9 @@ import { useModal } from '../hooks/Modal';
 import { CheckCircledIcon } from '@radix-ui/react-icons';
 import type { ToastVariantTypes } from '../components/ui/toast/types';
 import { useToast } from '../components/ui/toast/use-toast';
+import SkeletonProject from '../components/skeletons/SkeletonProject';
 
-const ProjectCard = lazy(() => import('../components/project/ProjectCard'));
+const ProjectCard = lazy(() => import('../components/cards/ProjectCard'));
 
 interface Project {
   _id: string;
@@ -143,9 +144,9 @@ export default function MyProjects(): JSX.Element {
       </div>
 
       {fetching ? (
-        <div className="space-y-4">
-          {Array.from({ length: 2 }).map((_, i) => (
-            <div key={i} className="animate-pulse p-4 border rounded-md bg-gray-200 dark:bg-gray-700 h-36"></div>
+        <div className="space-y-4 grid grid-cols-2 gap-7">
+          {Array.from({ length: 2 }).map((_, _i) => (
+            <SkeletonProject />
           ))}
         </div>
       ) : projects.length === 0 ? (
