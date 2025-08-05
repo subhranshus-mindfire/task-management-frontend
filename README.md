@@ -106,4 +106,4 @@ MIT License — feel free to use, modify, and distribute.
 
 ## 👨‍💻 Author
 
-Made with ❤️ by [Your Name]
+Made with ❤️ by Subhranshu
