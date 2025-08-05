@@ -203,7 +203,7 @@ export default function Layout(): JSX.Element {
                 <div className="hidden md:flex gap-2">
                   <button
                     onClick={toggleTheme}
-                    className="ml-2 text-xl me-6"
+                    className="ml-2 text-xl me-6 cursor-pointer"
                     title="Toggle Theme"
                   >
                     {theme === 'light' ? '🌙' : '☀️'}
@@ -232,7 +232,7 @@ export default function Layout(): JSX.Element {
         </div>
       </div>
 
-      <ModalContainer />
+      <ModalContainer theme={theme} />
     </>
   );
 

@@ -45,13 +45,13 @@ export default function AddProjectModal(): JSX.Element {
           <button
             type="button"
             onClick={closeModal}
-            className="text-gray-600 dark:text-gray-300 hover:underline"
+            className="text-gray-600 dark:text-gray-300 hover:underline  cursor-pointer"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700  cursor-pointer"
           >
             Create
           </button>

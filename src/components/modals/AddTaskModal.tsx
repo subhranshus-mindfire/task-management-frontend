@@ -93,7 +93,7 @@ export default function AddTaskModal({
           <button
             type="submit"
             disabled={loading}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50  cursor-pointer"
           >
             {loading ? 'Adding...' : 'Add Task'}
           </button>
