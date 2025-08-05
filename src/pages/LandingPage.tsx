@@ -71,7 +71,6 @@ export default function LandingPage(): JSX.Element {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="bg-gray-100 dark:bg-gray-800 py-8 px-8 text-center transition-colors">
         <p className="text-gray-500 dark:text-gray-400">
           © {new Date().getFullYear()} Taskify. All rights reserved.

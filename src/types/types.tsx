@@ -25,3 +25,28 @@ export interface ModalContextProps {
   openModal: (type: ModalType, props?: Record<string, unknown>) => void;
   closeModal: () => void;
 }
+
+export interface Task {
+  _id: string;
+  title: string;
+  description: string;
+  status: 'complete' | 'incomplete';
+  dueDate: string;
+  projectId: {
+    _id: string;
+    name: string;
+    description?: string;
+  };
+  createdBy: {
+    _id: string;
+    name: string;
+    email: string;
+  };
+}
+
+export interface Notification {
+  _id: string;
+  message: string;
+  read: boolean;
+  created_at: string;
+}

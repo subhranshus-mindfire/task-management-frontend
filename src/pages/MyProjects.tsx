@@ -1,12 +1,12 @@
-import { useEffect, useState, useRef, type JSX } from 'react';
+import { useEffect, useState, useRef, lazy, Suspense, type JSX } from 'react';
 import api from '../utils/api';
-import ProjectCard from '../components/project/ProjectCard';
 import { useAuth } from '../hooks/Auth';
 import { useModal } from '../hooks/Modal';
 import { CheckCircledIcon } from '@radix-ui/react-icons';
 import type { ToastVariantTypes } from '../components/ui/toast/types';
-import { useToast } from '../components//ui/toast/use-toast';
+import { useToast } from '../components/ui/toast/use-toast';
 
+const ProjectCard = lazy(() => import('../components/project/ProjectCard'));
 
 interface Project {
   _id: string;
@@ -42,8 +42,7 @@ export default function MyProjects(): JSX.Element {
   const modalRef = useRef<HTMLDivElement>(null);
 
   const fetchProjects = async (): Promise<void> => {
-    if (!user) { return; }
-
+    if (!user) return;
     try {
       setFetching(true);
       const res = await api.get<Project[]>(`/projects/by/${user.userId}`);
@@ -88,14 +87,8 @@ export default function MyProjects(): JSX.Element {
     fetchProjects();
   }, [user]);
 
-  const handleAddProject = (): void => {
-    openModal('createProject');
-  };
-
-  const handleAddMember = (projectId: string): void => {
-    openModal('addMember', { projectId });
-  };
-
+  const handleAddProject = (): void => openModal('createProject');
+  const handleAddMember = (projectId: string): void => openModal('addMember', { projectId });
   const handleDeleteClick = (project: Project): void => {
     setProjectToDelete(project);
     setShowDeleteModal(true);
@@ -108,8 +101,7 @@ export default function MyProjects(): JSX.Element {
   };
 
   const confirmDelete = async (): Promise<void> => {
-    if (!projectToDelete) { return; }
-
+    if (!projectToDelete) return;
     try {
       await api.delete(`/projects/${projectToDelete._id}`);
       fetchProjects();
@@ -123,25 +115,18 @@ export default function MyProjects(): JSX.Element {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent): void => {
-      if (
-        (showDeleteModal || showMembersModal) &&
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
+      if ((showDeleteModal || showMembersModal) && modalRef.current && !modalRef.current.contains(event.target as Node)) {
         setShowDeleteModal(false);
         setShowMembersModal(false);
         setProjectToDelete(null);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
-    return (): void => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showDeleteModal, showMembersModal]);
 
-  if (loading) { return <p className="dark:text-gray-200">Loading user...</p>; }
-  if (!user) { return <p className="dark:text-gray-200">You must be logged in to view your projects.</p>; }
+  if (loading) return <p className="dark:text-gray-200">Loading user...</p>;
+  if (!user) return <p className="dark:text-gray-200">You must be logged in to view your projects.</p>;
 
   return (
     <div className="p-1 md:px-40 text-gray-900 dark:text-gray-100 dark:bg-gray-800 min-h-screen">
@@ -157,36 +142,39 @@ export default function MyProjects(): JSX.Element {
         )}
       </div>
 
-      {fetching && <p className="dark:text-gray-300">Loading projects...</p>}
-
-      {projects.length === 0 && !fetching && (
+      {fetching ? (
+        <div className="space-y-4">
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div key={i} className="animate-pulse p-4 border rounded-md bg-gray-200 dark:bg-gray-700 h-36"></div>
+          ))}
+        </div>
+      ) : projects.length === 0 ? (
         <p className="text-gray-600 dark:text-gray-400">No projects assigned yet.</p>
+      ) : (
+        <Suspense fallback={<div className="text-gray-400 dark:text-gray-500">Loading projects...</div>}>
+          <div className="grid gap-4 md:grid-cols-2">
+            {projects.map((project) => (
+              <ProjectCard
+                key={project._id}
+                name={project.name}
+                description={project.description}
+                onAddMember={user.role === 'manager' ? () => handleAddMember(project._id) : undefined}
+                onSeeMembers={user.role === 'manager' ? () => handleSeeMembers(project._id) : undefined}
+                onDelete={user.role === 'manager' ? () => handleDeleteClick(project) : undefined}
+                _id={project._id}
+              />
+            ))}
+          </div>
+        </Suspense>
       )}
 
-      <div className="grid gap-4 md:grid-cols-2">
-        {projects.map((project) => (
-          <ProjectCard
-            key={project._id}
-            name={project.name}
-            description={project.description}
-            onAddMember={user.role === 'manager' ? (): void => handleAddMember(project._id) : undefined}
-            onSeeMembers={user.role === 'manager' ? (): Promise<void> => handleSeeMembers(project._id) : undefined}
-            onDelete={user.role === 'manager' ? (): void => handleDeleteClick(project) : undefined}
-            _id={project._id}
-          />
-        ))}
-      </div>
-
+      {/* Delete Modal */}
       {showDeleteModal && projectToDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgb(0,0,0,0.3)] bg-opacity-40">
-          <div
-            ref={modalRef}
-            className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-sm w-full shadow"
-          >
+          <div ref={modalRef} className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-sm w-full shadow">
             <h2 className="text-lg font-bold mb-4">Delete Project</h2>
             <p className="mb-6">
-              Are you sure you want to delete{' '}
-              <span className="font-semibold">{projectToDelete.name}</span>?
+              Are you sure you want to delete <span className="font-semibold">{projectToDelete.name}</span>?
             </p>
             <div className="flex justify-end gap-3">
               <button
@@ -206,22 +194,17 @@ export default function MyProjects(): JSX.Element {
         </div>
       )}
 
+      {/* Members Modal */}
       {showMembersModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgb(0,0,0,0.3)] bg-opacity-40">
-          <div
-            ref={modalRef}
-            className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full shadow"
-          >
+          <div ref={modalRef} className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full shadow">
             <h2 className="text-lg font-bold mb-4">Project Members</h2>
             {members.length === 0 ? (
               <p className="text-gray-600 dark:text-gray-300">No members found.</p>
             ) : (
               <ul className="space-y-3">
                 {members.map((m) => (
-                  <li
-                    key={m._id}
-                    className="flex items-center justify-between border-b pb-2 dark:border-gray-700"
-                  >
+                  <li key={m._id} className="flex items-center justify-between border-b pb-2 dark:border-gray-700">
                     <div>
                       <p className="font-semibold">{m.userId.name}</p>
                       <p className="text-sm text-gray-500 dark:text-gray-400">{m.email}</p>
