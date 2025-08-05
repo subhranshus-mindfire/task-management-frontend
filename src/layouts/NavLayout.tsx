@@ -2,7 +2,7 @@ import { useEffect, useState, type JSX } from 'react';
 import { NavLink, Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/Auth';
 import { useModal } from '../hooks/Modal';
-import ModalContainer from '../components/modal/ModalContainer';
+import ModalContainer from '../components/modals/ModalContainer';
 import api from '../utils/api';
 
 export default function Layout(): JSX.Element {
@@ -203,7 +203,7 @@ export default function Layout(): JSX.Element {
                 <div className="hidden md:flex gap-2">
                   <button
                     onClick={toggleTheme}
-                    className="ml-2 text-xl me-6"
+                    className="ml-2 text-xl me-6 cursor-pointer"
                     title="Toggle Theme"
                   >
                     {theme === 'light' ? '🌙' : '☀️'}
@@ -232,7 +232,7 @@ export default function Layout(): JSX.Element {
         </div>
       </div>
 
-      <ModalContainer />
+      <ModalContainer theme={theme} />
     </>
   );
 

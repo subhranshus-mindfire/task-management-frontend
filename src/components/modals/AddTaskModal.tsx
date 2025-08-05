@@ -17,7 +17,7 @@ export default function AddTaskModal({
   const [dueDate, setDueDate] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleAddTask = async (e: FormEvent) => {
+  const handleAddTask = async (e: FormEvent):Promise<void> => {
     e.preventDefault();
     setLoading(true);
 
@@ -93,7 +93,7 @@ export default function AddTaskModal({
           <button
             type="submit"
             disabled={loading}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50  cursor-pointer"
           >
             {loading ? 'Adding...' : 'Add Task'}
           </button>

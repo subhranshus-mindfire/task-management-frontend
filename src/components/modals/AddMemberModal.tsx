@@ -14,24 +14,27 @@ interface User {
 interface AddMemberModalProps {
   onClose: () => void;
   projectId: string;
+  theme?: 'light' | 'dark';
 }
 
 export default function AddMemberModal({
   onClose,
   projectId,
+  theme,
 }: AddMemberModalProps): JSX.Element {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const toast = useToast();
 
-  const showNotification = (msg: string, type: ToastVariantTypes) => {
+  const showNotification = (msg: string, type: ToastVariantTypes): void => {
     toast.addToast({
       message: msg,
       variant: type,
       animation: 'slide',
-      mode: 'light',
+      mode: 'dark',
       icon: <CheckCircledIcon />,
+      appearance: theme === 'dark' ? 'gradient' : 'premium',
     });
   };
 
@@ -109,7 +112,7 @@ export default function AddMemberModal({
         <button
           type="button"
           onClick={onClose}
-          className="text-blue-600 dark:text-blue-400 underline text-sm"
+          className="text-blue-600 dark:text-blue-400 underline text-sm  cursor-pointer"
         >
           Cancel
         </button>

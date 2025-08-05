@@ -2,10 +2,9 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-
  @font-face {
    font-family: 'openSauceSans' ;
-   src: url('./fonts/open-sauce.one-regular.ttf') format('truetype');
+   src: url('./assets/fonts/open-sauce.one-regular.ttf') format('truetype');
 }
 
 body{

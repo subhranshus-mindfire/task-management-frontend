@@ -1,70 +1,109 @@
-# React + TypeScript + Vite
+# 🧠 Taskify — Task & Project Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Taskify is a full-stack task and project management application designed for teams to collaborate efficiently. Built with **React**, **Node.js**, **Express**, and **MongoDB**, it supports authentication, role-based access, project/task CRUD, drag-and-drop task organization, and more.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- 🧑‍💼 **Role-based access** (Manager, Member)
+- 📁 **Projects**: create, view, delete, manage members
+- ✅ **Tasks**: add, delete, mark as complete/incomplete
+- 🧲 **Drag-and-drop task board**
+- 🔔 **Notifications**
+- 🌐 **JWT Auth** (with HTTP-only cookies)
+- 🎨 **Responsive UI** (with Tailwind CSS)
+- ☁️ **API-first architecture** (RESTful)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🧰 Tech Stack
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- **Frontend**: React + Vite + Tailwind CSS + Axios + React DnD
+- **Backend**: Node.js + Express + MongoDB + Mongoose
+- **Auth**: JWT with Refresh Tokens (stored in cookies)
+- **State Management**: React Context API
+- **Deployment**: Vercel (Frontend) + Render/Any Node Host (Backend)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## 🛠 Setup Instructions
+
+### 📦 Prerequisites
+
+- Node.js >= 18
+- MongoDB running locally or remotely
+
+### 🔧 Backend Setup
+
+```bash
+cd backend
+npm install
+cp .env.example .env
+# Set your Mongo URI, JWT secrets in .env
+
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 💻 Frontend Setup
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+cd frontend
+npm install
+cp .env.example .env
+# Set VITE_API_URL to your backend endpoint
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+npm run dev
 ```
-# task-management-frontend
+
+---
+
+## 🧪 Testing
+
+You can run tests (if set up) using:
+
+```bash
+npm test
+```
+
+---
+
+## 📁 Project Structure
+
+```
+project-root/
+├── backend/
+│   ├── controllers/
+│   ├── routes/
+│   └── models/
+├── frontend/
+│   ├── components/
+│   ├── pages/
+│   └── hooks/
+```
+
+---
+
+## 🗒 Changelog
+
+All notable changes are documented in [`CHANGELOG.md`](./CHANGELOG.md)
+
+---
+
+## 🔐 Security
+
+- Cookies are `HttpOnly`, `Secure` in production
+- CORS configured to allow only trusted origins
+- JWT rotation implemented for safety
+
+---
+
+## 📜 License
+
+MIT License — feel free to use, modify, and distribute.
+
+---
+
+## 👨‍💻 Author
+
+Made with ❤️ by [Your Name]

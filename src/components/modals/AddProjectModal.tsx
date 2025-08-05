@@ -2,12 +2,12 @@ import { useState, type JSX } from 'react';
 import api from '../../utils/api';
 import { useModal } from '../../hooks/Modal';
 
-export default function CreateProjectModal(): JSX.Element {
+export default function AddProjectModal(): JSX.Element {
   const { closeModal } = useModal();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
-  const handleCreate = async (e: React.FormEvent) => {
+  const handleCreate = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     try {
       await api.post('/projects', { name, description });
@@ -45,13 +45,13 @@ export default function CreateProjectModal(): JSX.Element {
           <button
             type="button"
             onClick={closeModal}
-            className="text-gray-600 dark:text-gray-300 hover:underline"
+            className="text-gray-600 dark:text-gray-300 hover:underline  cursor-pointer"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700  cursor-pointer"
           >
             Create
           </button>

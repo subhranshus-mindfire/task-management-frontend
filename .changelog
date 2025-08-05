@@ -1,0 +1,17 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [Unreleased]
+
+## [1.0.0] - 2025-08-05
+### Added
+- Initial project setup with folder structure and configuration.
+- Authentication with JWT and cookie-based sessions.
+- Project management (create, view, delete).
+- Member management (add, remove, view).
+- Task board with drag-and-drop and modal confirmation for deletion.
+- Notification system with mark-as-read support.
+- Responsive UI with dark mode support.
+- Skeleton loaders for project view.
+- Toast notifications for actions.

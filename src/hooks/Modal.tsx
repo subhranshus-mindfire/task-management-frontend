@@ -9,3 +9,5 @@ export function useModal(): ModalContextProps {
   }
   return context;
 }
+
+export { ModalContext };
